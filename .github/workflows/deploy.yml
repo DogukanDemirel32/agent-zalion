@@ -24,8 +24,11 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT || 22 }}
           source: "app.tar.gz"
           target: "~/"
+          debug: true
+          timeout: 30s
 
       - name: Execute deployment script
         uses: appleboy/ssh-action@v1.0.3
@@ -33,6 +36,9 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT || 22 }}
+          debug: true
+          timeout: 30s
           script: |
             # Extract new code (overwrite existing files, but keep certbot folder)
             # We use sudo tar to ensure we can write over files if ownership is mixed
