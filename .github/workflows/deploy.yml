@@ -1,0 +1,44 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create deployment artifact
+        run: |
+          tar --exclude="node_modules" --exclude=".git" --exclude=".next" -czf app.tar.gz .
+
+      - name: Copy artifact via SSH
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "app.tar.gz"
+          target: "~/"
+
+      - name: Execute deployment script
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Extract new code (overwrite existing files, but keep certbot folder)
+            # We use sudo tar to ensure we can write over files if ownership is mixed
+            sudo tar -xzf ~/app.tar.gz -C ~/app
+            rm ~/app.tar.gz
+            
+            # Deploy
+            cd ~/app
+            sudo chmod +x deploy.sh
+            sudo ./deploy.sh

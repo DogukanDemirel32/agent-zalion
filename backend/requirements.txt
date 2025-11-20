@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langchain
+langchain-community
+langgraph
+duckduckgo-search
+psycopg2-binary
+sqlalchemy
+redis
+python-multipart
+pydantic
+requests
+python-dotenv
