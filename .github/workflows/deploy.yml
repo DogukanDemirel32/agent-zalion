@@ -41,7 +41,7 @@ jobs:
             
             # Create .env file from secrets
             cd ~/app
-            cat > .env << EOF
+            sudo tee .env > /dev/null << EOF
             DATABASE_URL=${{ secrets.DATABASE_URL }}
             REDIS_URL=${{ secrets.REDIS_URL }}
             CORS_ORIGINS=${{ secrets.CORS_ORIGINS }}
@@ -50,6 +50,7 @@ jobs:
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             POSTGRES_DB=${{ secrets.POSTGRES_DB }}
             EOF
+            sudo chmod 644 .env
             
             # Deploy
             sudo chmod +x deploy.sh
