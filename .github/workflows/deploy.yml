@@ -18,17 +18,31 @@ jobs:
           tar --exclude="node_modules" --exclude=".git" --exclude=".next" -czf /tmp/app.tar.gz .
           mv /tmp/app.tar.gz ./app.tar.gz
 
-      - name: Test SSH connection
+      - name: Test SSH connection (diagnostic)
+        continue-on-error: true
         run: |
-          echo "Testing SSH connection..."
+          echo "=== SSH Connection Diagnostic ==="
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
+          
+          # Write key to file
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p ${EC2_PORT:-22} ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
-          ssh -v -i ~/.ssh/deploy_key -p ${EC2_PORT:-22} -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'" || echo "SSH connection failed"
+          
+          # Check key format
+          echo "Checking key format..."
+          head -1 ~/.ssh/deploy_key | grep -q "BEGIN" && echo "✓ Key has BEGIN header" || echo "✗ Key missing BEGIN header"
+          tail -1 ~/.ssh/deploy_key | grep -q "END" && echo "✓ Key has END footer" || echo "✗ Key missing END footer"
+          
+          # Add host to known_hosts
+          PORT="${{ secrets.EC2_PORT || '22' }}"
+          ssh-keyscan -p "$PORT" "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+          
+          # Test connection with verbose output
+          echo "Attempting SSH connection..."
+          ssh -vvv -i ~/.ssh/deploy_key -p "$PORT" -o StrictHostKeyChecking=no -o ConnectTimeout=10 "${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}" "echo 'SSH connection successful'" 2>&1 || echo "SSH connection failed"
         env:
-          EC2_PORT: ${{ secrets.EC2_PORT || 22 }}
+          EC2_PORT: ${{ secrets.EC2_PORT || '22' }}
 
       - name: Copy artifact via SSH
         uses: appleboy/scp-action@v0.1.7
