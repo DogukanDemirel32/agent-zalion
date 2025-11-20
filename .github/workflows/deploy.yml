@@ -15,7 +15,8 @@ jobs:
 
       - name: Create deployment artifact
         run: |
-          tar --exclude="node_modules" --exclude=".git" --exclude=".next" --exclude="app.tar.gz" --warning=no-file-changed -czf app.tar.gz .
+          tar --exclude="node_modules" --exclude=".git" --exclude=".next" -czf /tmp/app.tar.gz .
+          mv /tmp/app.tar.gz ./app.tar.gz
 
       - name: Copy artifact via SSH
         uses: appleboy/scp-action@v0.1.7
@@ -38,7 +39,18 @@ jobs:
             sudo tar -xzf ~/app.tar.gz -C ~/app
             rm ~/app.tar.gz
             
-            # Deploy
+            # Create .env file from secrets
             cd ~/app
+            cat > .env << EOF
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            REDIS_URL=${{ secrets.REDIS_URL }}
+            CORS_ORIGINS=${{ secrets.CORS_ORIGINS }}
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+            EOF
+            
+            # Deploy
             sudo chmod +x deploy.sh
             sudo ./deploy.sh
