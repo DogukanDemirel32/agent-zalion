@@ -15,7 +15,7 @@ jobs:
 
       - name: Create deployment artifact
         run: |
-          tar --exclude="node_modules" --exclude=".git" --exclude=".next" -czf app.tar.gz .
+          tar --exclude="node_modules" --exclude=".git" --exclude=".next" --exclude="app.tar.gz" --warning=no-file-changed -czf app.tar.gz .
 
       - name: Copy artifact via SSH
         uses: appleboy/scp-action@v0.1.7
