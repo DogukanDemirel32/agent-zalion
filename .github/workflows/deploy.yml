@@ -18,6 +18,18 @@ jobs:
           tar --exclude="node_modules" --exclude=".git" --exclude=".next" -czf /tmp/app.tar.gz .
           mv /tmp/app.tar.gz ./app.tar.gz
 
+      - name: Test SSH connection
+        run: |
+          echo "Testing SSH connection..."
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p ${EC2_PORT:-22} ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -v -i ~/.ssh/deploy_key -p ${EC2_PORT:-22} -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} "echo 'SSH connection successful'" || echo "SSH connection failed"
+        env:
+          EC2_PORT: ${{ secrets.EC2_PORT || 22 }}
+
       - name: Copy artifact via SSH
         uses: appleboy/scp-action@v0.1.7
         with:
