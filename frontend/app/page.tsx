@@ -12,11 +12,11 @@ interface Supplier {
 }
 
 const presetQueries = [
-    "Find suppliers for industrial components",
-    "Search for manufacturing partners",
-    "Locate raw material suppliers",
-    "Find quality certified vendors",
-    "Search for international suppliers"
+    "Show me the list of my repair capabilities.",
+    "I'd like to request a part.",
+    "I want to update my inventory records.",
+    "I'd like to start an exchange process.",
+    "Show me the current status of my orders."
 ];
 
 export default function Home() {
@@ -79,85 +79,79 @@ export default function Home() {
     };
 
     return (
-        <main className="min-h-screen bg-[#FAFAFB] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="w-full max-w-[528px] flex flex-col items-center gap-8">
-                {/* Title */}
-                <div className="text-center">
-                    <h1 className="text-[32px] font-light leading-[1.25] tracking-[-0.25%] text-[#222222]">
-                        Cagdas <span className="text-indigo-600">Supplier Scout</span>
+        <main className="relative min-h-screen w-full overflow-hidden bg-linear-to-b from-[#F9FAFB] to-[#F2F4F7] px-4 py-12">
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <div className="h-[420px] w-[420px] rounded-full bg-white blur-3xl opacity-50" />
+            </div>
+
+            <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center gap-10 text-center">
+                <div>
+                    <p className="text-sm uppercase tracking-[0.35em] text-[#A0AEC0]">Support assistant</p>
+                    <h1 className="mt-4 text-4xl font-light tracking-tight text-[#1C1E26] md:text-[48px]">
+                        How can I help you?
                     </h1>
                 </div>
 
-                {/* Input Container */}
-                <div className="w-full flex flex-col gap-1">
-                    <form onSubmit={handleSubmit} className="relative">
-                        <div className="bg-white border border-[#EBEBEB] rounded-2xl shadow-[0px_0px_10px_0px_rgba(34,34,34,0.04),0px_4px_6px_-2px_rgba(34,34,34,0.04),0px_6px_12px_-2px_rgba(34,34,34,0.06)]">
-                            {/* Input Field */}
-                            <div className="pt-3 px-3">
-                                <input
-                                    type="text"
-                                    name="search"
-                                    id="search"
-                                    className="w-full bg-transparent border-none outline-none text-sm leading-[1.43] text-[#222222] placeholder:text-[#888888] py-2"
-                                    placeholder="Enter a description..."
-                                    value={query}
-                                    onChange={(e) => setQuery(e.target.value)}
-                                />
-                            </div>
-                            
-                            {/* Buttons Row */}
-                            <div className="flex justify-between items-center gap-2 px-3 pb-3 pt-1 bg-gradient-to-b from-[rgba(254,254,254,0.4)] to-[rgba(254,254,254,1)]">
-                                {/* Attach Button */}
-                                <button
-                                    type="button"
-                                    className="flex items-center gap-1 px-[10px] py-1.5 bg-white border border-[#EBEBEB] rounded-lg shadow-[0px_1px_2px_0px_rgba(34,34,34,0.05)] hover:bg-gray-50 transition-colors"
-                                >
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12.5 5.83333V13.3333C12.5 14.7142 11.3808 15.8333 10 15.8333C8.61917 15.8333 7.5 14.7142 7.5 13.3333V5C7.5 3.61917 8.61917 2.5 10 2.5C11.3808 2.5 12.5 3.61917 12.5 5V11.6667" stroke="#505050" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                    <span className="text-sm leading-[1.43] text-[#505050] font-light">Attach</span>
-                                </button>
+                <form onSubmit={handleSubmit} className="w-full">
+                    <div className="rounded-[32px] border border-[#E5E7EB] bg-white/90 p-6 shadow-[0_30px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+                        <label htmlFor="search" className="mb-3 block text-left text-sm font-medium text-[#8A8F9C]">
+                            Enter a description
+                        </label>
+                        <div className="flex items-center gap-3 rounded-[24px] border border-transparent bg-[#F7F8FC] px-4 py-3 transition focus-within:border-[#C4B5FD]">
+                            <button
+                                type="button"
+                                className="flex items-center gap-2 rounded-full bg-white/80 px-3 py-2 text-sm text-[#5C6475] shadow-[0_8px_20px_rgba(44,52,74,0.08)] transition hover:bg-white"
+                            >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 13.5V6.75C7 5.23122 8.23122 4 9.75 4V4C11.2688 4 12.5 5.23122 12.5 6.75V14.25C12.5 15.7688 11.2688 17 9.75 17V17C8.23122 17 7 15.7688 7 14.25V9.5" stroke="#5C6475" strokeWidth="1.5" strokeLinecap="round"/>
+                                    <path d="M12.5 10.25V6.75C12.5 5.23122 13.7312 4 15.25 4V4C16.7688 4 18 5.23122 18 6.75V13.5C18 16.5376 15.5376 19 12.5 19V19C9.46243 19 7 16.5376 7 13.5V11.5" stroke="#5C6475" strokeWidth="1.5" strokeLinecap="round"/>
+                                </svg>
+                                Attach
+                            </button>
 
-                                {/* Send Button */}
-                                <button
-                                    type="submit"
-                                    disabled={loading || !query.trim()}
-                                    className="p-1.5 bg-white border border-[#EBEBEB] rounded-lg shadow-[0px_1px_2px_0px_rgba(34,34,34,0.05)] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                >
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10 3.33333V16.6667M10 3.33333L4.16667 9.16667M10 3.33333L15.8333 9.16667" stroke={query.trim() ? "#505050" : "#D0B5BC"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </button>
-                            </div>
+                            <input
+                                type="text"
+                                name="search"
+                                id="search"
+                                className="flex-1 bg-transparent text-base text-[#1E2029] placeholder:text-[#A0A5B4] focus:outline-none"
+                                placeholder="Describe what you need help with..."
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                            />
+
+                            <button
+                                type="submit"
+                                disabled={loading || !query.trim()}
+                                className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#F1EBFF] text-[#6C4CF5] shadow-[0_8px_24px_rgba(108,76,245,0.25)] transition hover:bg-[#E6DEFF] disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 3.33333V16.6667M10 3.33333L4.16667 9.16667M10 3.33333L15.8333 9.16667" stroke="#6C4CF5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            </button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
 
-                {/* Preset Messages */}
                 {results.length === 0 && !loading && (
-                    <div className="w-full flex flex-wrap justify-center gap-2">
+                    <div className="flex flex-wrap justify-center gap-3">
                         {presetQueries.map((preset, index) => (
                             <button
                                 key={index}
                                 onClick={() => handlePresetClick(preset)}
-                                className="px-[10px] py-0.5 bg-[#EAEBF0] rounded-2xl shadow-[0px_1px_2px_0px_rgba(34,34,34,0.05)] hover:bg-[#D5D6DB] transition-colors"
+                                className="rounded-full bg-white px-4 py-2 text-sm text-[#586380] shadow-[0_8px_24px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5"
                             >
-                                <span className="text-sm leading-[1.43] text-[#182039] font-light">
-                                    {preset}
-                                </span>
+                                {preset}
                             </button>
                         ))}
                     </div>
                 )}
 
-                {/* Success Message */}
                 {saved && (
-                    <div className="w-full p-4 bg-green-100 text-green-700 rounded-md text-center">
+                    <div className="w-full rounded-2xl border border-green-100 bg-green-50/90 px-4 py-3 text-sm text-green-700 shadow-inner">
                         {saved}
                     </div>
                 )}
 
-                {/* Results */}
                 <div className="w-full space-y-6">
                     {results.map((supplier, index) => (
                         <SupplierCard key={index} supplier={supplier} onSave={handleSave} />
