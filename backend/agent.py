@@ -2,7 +2,7 @@ import os
 import json
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_core.messages import HumanMessage, SystemMessage
-# from langchain_openai import ChatOpenAI # Uncomment if using OpenAI
+# from langchain_openai import ChatOpenAI
 
 def run_supplier_scout(query: str):
     """

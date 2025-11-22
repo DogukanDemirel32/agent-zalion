@@ -79,66 +79,67 @@ export default function Home() {
     };
 
     return (
-        <main className="relative min-h-screen w-full overflow-hidden bg-linear-to-b from-[#F9FAFB] to-[#F2F4F7] px-4 py-12">
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <div className="h-[420px] w-[420px] rounded-full bg-white blur-3xl opacity-50" />
-            </div>
-
-            <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center gap-10 text-center">
-                <div>
-                    <p className="text-sm uppercase tracking-[0.35em] text-[#A0AEC0]">Support assistant</p>
-                    <h1 className="mt-4 text-4xl font-light tracking-tight text-[#1C1E26] md:text-[48px]">
+        <main className="min-h-screen w-full bg-[#FAFAFB] flex items-center justify-center px-4 py-12">
+            <div className="w-full max-w-[528px] flex flex-col items-center gap-8">
+                {/* Title Section */}
+                <div className="w-full text-center">
+                    <h1 className="text-[32px] font-light leading-tight tracking-[-0.25%] text-[#222222]">
                         How can I help you?
                     </h1>
                 </div>
 
+                {/* Chat Input Section */}
                 <form onSubmit={handleSubmit} className="w-full">
-                    <div className="rounded-[32px] border border-[#E5E7EB] bg-white/90 p-6 shadow-[0_30px_60px_rgba(15,23,42,0.08)] backdrop-blur">
-                        <label htmlFor="search" className="mb-3 block text-left text-sm font-medium text-[#8A8F9C]">
-                            Enter a description
-                        </label>
-                        <div className="flex items-center gap-3 rounded-[24px] border border-transparent bg-[#F7F8FC] px-4 py-3 transition focus-within:border-[#C4B5FD]">
-                            <button
-                                type="button"
-                                className="flex items-center gap-2 rounded-full bg-white/80 px-3 py-2 text-sm text-[#5C6475] shadow-[0_8px_20px_rgba(44,52,74,0.08)] transition hover:bg-white"
-                            >
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7 13.5V6.75C7 5.23122 8.23122 4 9.75 4V4C11.2688 4 12.5 5.23122 12.5 6.75V14.25C12.5 15.7688 11.2688 17 9.75 17V17C8.23122 17 7 15.7688 7 14.25V9.5" stroke="#5C6475" strokeWidth="1.5" strokeLinecap="round"/>
-                                    <path d="M12.5 10.25V6.75C12.5 5.23122 13.7312 4 15.25 4V4C16.7688 4 18 5.23122 18 6.75V13.5C18 16.5376 15.5376 19 12.5 19V19C9.46243 19 7 16.5376 7 13.5V11.5" stroke="#5C6475" strokeWidth="1.5" strokeLinecap="round"/>
-                                </svg>
-                                Attach
-                            </button>
+                    <div className="w-full flex flex-col gap-1 shadow-[0px_0px_10px_0px_rgba(34,34,34,0.04),0px_4px_6px_-2px_rgba(34,34,34,0.04),0px_6px_12px_-2px_rgba(34,34,34,0.06)]">
+                        <div className="w-full bg-white border border-[#EBEBEB] rounded-2xl flex flex-col">
+                            {/* Input Area */}
+                            <div className="px-3 pt-3">
+                                <input
+                                    type="text"
+                                    name="search"
+                                    id="search"
+                                    className="w-full bg-transparent text-sm font-light text-[#222222] placeholder:text-[#888888] focus:outline-none pb-2"
+                                    placeholder="Enter a description..."
+                                    value={query}
+                                    onChange={(e) => setQuery(e.target.value)}
+                                />
+                            </div>
+                            
+                            {/* Buttons Row */}
+                            <div className="px-3 pb-3 pt-1 flex items-center justify-between bg-gradient-to-b from-[rgba(254,254,254,0.4)] to-[rgba(254,254,254,1)]">
+                                <button
+                                    type="button"
+                                    className="flex items-center gap-1 px-[10px] py-1.5 bg-white border border-[#EBEBEB] rounded-lg shadow-[0px_1px_2px_0px_rgba(34,34,34,0.05)] text-sm font-light text-[#505050] hover:bg-gray-50 transition"
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 13.5V6.75C7 5.23122 8.23122 4 9.75 4V4C11.2688 4 12.5 5.23122 12.5 6.75V14.25C12.5 15.7688 11.2688 17 9.75 17V17C8.23122 17 7 15.7688 7 14.25V9.5" stroke="#505050" strokeWidth="1.5" strokeLinecap="round"/>
+                                        <path d="M12.5 10.25V6.75C12.5 5.23122 13.7312 4 15.25 4V4C16.7688 4 18 5.23122 18 6.75V13.5C18 16.5376 15.5376 19 12.5 19V19C9.46243 19 7 16.5376 7 13.5V11.5" stroke="#505050" strokeWidth="1.5" strokeLinecap="round"/>
+                                    </svg>
+                                    <span>Attach</span>
+                                </button>
 
-                            <input
-                                type="text"
-                                name="search"
-                                id="search"
-                                className="flex-1 bg-transparent text-base text-[#1E2029] placeholder:text-[#A0A5B4] focus:outline-none"
-                                placeholder="Describe what you need help with..."
-                                value={query}
-                                onChange={(e) => setQuery(e.target.value)}
-                            />
-
-                            <button
-                                type="submit"
-                                disabled={loading || !query.trim()}
-                                className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-[#F1EBFF] text-[#6C4CF5] shadow-[0_8px_24px_rgba(108,76,245,0.25)] transition hover:bg-[#E6DEFF] disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10 3.33333V16.6667M10 3.33333L4.16667 9.16667M10 3.33333L15.8333 9.16667" stroke="#6C4CF5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                            </button>
+                                <button
+                                    type="submit"
+                                    disabled={loading || !query.trim()}
+                                    className="flex items-center justify-center w-6 h-6 p-1.5 bg-[#FAF7F7] border border-[#FAF7F7] rounded-lg text-[#D0B5BC] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#F5F0F0] transition"
+                                >
+                                    <svg width="13" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 3.33333V16.6667M10 3.33333L4.16667 9.16667M10 3.33333L15.8333 9.16667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>
 
+                {/* Preset Messages */}
                 {results.length === 0 && !loading && (
-                    <div className="flex flex-wrap justify-center gap-3">
+                    <div className="w-full max-w-[576px] flex flex-wrap justify-center gap-2">
                         {presetQueries.map((preset, index) => (
                             <button
                                 key={index}
                                 onClick={() => handlePresetClick(preset)}
-                                className="rounded-full bg-white px-4 py-2 text-sm text-[#586380] shadow-[0_8px_24px_rgba(15,23,42,0.08)] transition hover:-translate-y-0.5"
+                                className="px-2.5 py-0.5 bg-[#EAEBF0] rounded-2xl text-sm font-light text-[#182039] shadow-[0px_1px_2px_0px_rgba(34,34,34,0.05)] hover:bg-[#E0E1E6] transition"
                             >
                                 {preset}
                             </button>
